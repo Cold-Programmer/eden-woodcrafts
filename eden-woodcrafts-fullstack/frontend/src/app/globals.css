@@ -1,0 +1,97 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * Design tokens — single source of truth for color, spacing, radius,
+ * shadow and motion across the app. Tailwind config reads the color
+ * tokens; components reference the shadow/motion/radius tokens directly
+ * so animation timing and elevation stay consistent everywhere.
+ */
+:root {
+  /* Color — stored as "R G B" triples so Tailwind can apply opacity
+     modifiers (e.g. border-wood/10). forest/wood/warmwhite/gold/charcoal
+     are used throughout as FIXED accent-contrast pairs (e.g. bg-forest +
+     text-warmwhite on buttons) and intentionally do NOT change with
+     theme — swapping them broke contrast on every colored button/hero
+     section. Dark mode instead uses its own page-bg/page-ink/surface
+     tokens for the things that should actually re-theme. */
+  --color-forest: 31 58 44;
+  --color-forest-light: 46 82 64;
+  --color-wood: 123 75 42;
+  --color-wood-light: 169 113 63;
+  --color-warmwhite: 250 246 240;
+  --color-gold: 201 162 75;
+  --color-charcoal: 38 34 30;
+
+  /* Theme-aware tokens — these DO swap under .dark */
+  --color-page-bg: 250 246 240;
+  --color-page-ink: 38 34 30;
+  --color-surface: 255 255 255;
+
+  /* 8pt spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+
+  /* Elevation (shadow) */
+  --shadow-sm: 0 1px 2px rgba(38, 34, 30, 0.06);
+  --shadow-md: 0 4px 12px rgba(38, 34, 30, 0.08);
+  --shadow-lg: 0 12px 32px rgba(38, 34, 30, 0.14);
+
+  /* Motion */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --duration-fast: 120ms;
+  --duration-base: 200ms;
+  --duration-slow: 320ms;
+}
+
+.dark {
+  --color-page-bg: 24 22 20;
+  --color-page-ink: 237 232 224;
+  --color-surface: 34 31 28;
+  --color-forest-light: 74 122 96;
+  --color-gold: 214 181 108;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: rgb(var(--color-page-bg));
+  transition: background-color var(--duration-base) var(--ease-standard), color var(--duration-base) var(--ease-standard);
+  color: rgb(var(--color-page-ink));
+}
+
+::selection {
+  background-color: rgb(var(--color-gold));
+  color: rgb(var(--color-charcoal));
+}
+
+/* Consistent, visible focus ring for keyboard navigation across every
+   interactive element — buttons, links, inputs, selects. */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-gold));
+  outline-offset: 2px;
+}
+
+@keyframes skeleton-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
